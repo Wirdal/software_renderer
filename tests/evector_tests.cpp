@@ -52,10 +52,10 @@ int main()
 			vec1[0] = 3.0; vec1[1] = 4.0;
 
 			// we will need to check for an epsilon here in the future
-			CHECK_TRUE(vec1.magintude() == 5.0); // sqrt(3^2 + 4^2) = 5
+			CHECK_TRUE(vec1.magnitude() == 5.0); // sqrt(3^2 + 4^2) = 5
 		}
 
-		// Squared magintude test
+		// Squared magnitude test
 		{
 			evector<float, 3> vec1;
 			vec1[0] = 2; vec1[1] = 3; vec1[2] = 6;
@@ -85,6 +85,28 @@ int main()
 
 			float dot_product = vec1.dot(vec2);
 			CHECK_TRUE(dot_product == 32.0f); // 1*4 + 2*5 + 3*6 = 32
+		}
+
+		// Collinearity test
+		{
+			evector<float, 3> vec1;
+			vec1[0] = 1.0f; vec1[1] = 2.0f; vec1[2] = 3.0f;
+
+			evector<float, 3> vec2;
+			vec2[0] = 2.0f; vec2[1] = 4.0f; vec2[2] = 6.0f;
+
+			CHECK_TRUE(vec1.collinear(vec2)); // vec2 is just vec1 scaled by 2
+		}
+
+		// Anti-collinearity test
+		{
+			evector<float, 3> vec1;
+			vec1[0] = 1.0f; vec1[1] = 2.0f; vec1[2] = 3.0f;
+
+			evector<float, 3> vec2;
+			vec2[0] = -1.0f; vec2[1] = -2.0f; vec2[2] = -3.0f;
+
+			CHECK_TRUE(vec1.anti_collinear(vec2)); // vec2 is vec1 scaled by -1
 		}
 
 		// Cross product test

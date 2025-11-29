@@ -23,6 +23,14 @@ template <Floating T = float, size_t Dimensions = 3>
 struct evector // evector for euclidean vector
 {
 
+	// Epsilon is one in one hundredth of the smallest representable value
+	static constexpr T epsilon { std::numeric_limits<T>::epsilon() * T{100} };
+
+	static constexpr bool approximately_equal(T a, T b)
+	{
+		return (epsilon >= std::fabs(a - b) ||  std::fabs(a - b) <= epsilon);
+	}
+
 	// Modifies input vector
 	friend constexpr evector& operator*(evector& vec, T scalar)
 	{
@@ -105,7 +113,7 @@ struct evector // evector for euclidean vector
 	}
 
 	// Probably needs to be a float?
-	constexpr T magintude() const
+	constexpr T magnitude() const
 	{
 		T total{};
 		for (const T ite : m_data)
@@ -128,7 +136,7 @@ struct evector // evector for euclidean vector
 
 	constexpr evector normalize() const
 	{
-		return ((*this) * ( (T{1.0}/magintude()) ));
+		return ((*this) * ( (T{1.0}/magnitude()) ));
 	}
 
 	// Product of the length of this and other, and the cosine of the angle between them
@@ -156,29 +164,29 @@ struct evector // evector for euclidean vector
 	// The angle between this and the other vector is exactly 0 degrees
 	constexpr bool collinear(const evector& other) const
 	{
-		T this_mag = magintude();
-		T other_mag = other.magintude();
+		T this_mag = magnitude();
+		T other_mag = other.magnitude();
 
-		T dot = dot(other);
+		T dot_val = dot(other);
 
-		return dot == (this_mag * other_mag); // Check for epsilon
+		return approximately_equal(dot_val, this_mag * other_mag); // Check for epsilon
 	}
 
 	// Collinear but opposite direction
 	constexpr bool anti_collinear(const evector& other) const
 	{
-		T this_mag = magintude();
-		T other_mag = other.magintitude();
+		T this_mag = magnitude();
+		T other_mag = other.magnitude();
 
-		T dot = dot(other);
+		T dot_val = dot(other);
 
-		return dot == -(this_mag * other_mag); // Check for epsilon
+		return approximately_equal(dot_val, -(this_mag * other_mag)); // Check for epsilon
 	}
 
 	constexpr bool perpendicular(const evector& other) const
 	{
-		T dot = dot(other);
-		return dot == T{0}; // Check for epsilon
+		T dot_val = dot(other);
+		return approximately_equal(dot_val, T{0}); // Check for epsilon
 	}
 
 	// The angle between them is less than 90 degrees
