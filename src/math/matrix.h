@@ -5,15 +5,15 @@
 
 // Stored in row-major order
 template <size_t Rows, size_t Cols, Floating T>
-class EMatrix
+class matrix
 {
 public:
-	evector<T, Cols>& operator[] (size_t index)
+	evector<T, Rows>& operator[] (size_t index)
 	{
 		return m_data[index];
 	}
 
-	const evector<T, Cols>& operator[] (size_t index) const
+	const evector<T, Rows>& operator[] (size_t index) const
 	{
 		return m_data[index];
 	}
