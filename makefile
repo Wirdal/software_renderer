@@ -19,8 +19,7 @@ main: $(MAINOBJECTS)
 	$(CC) -stdlib=$(STDLIB) -L$(SDL3LIB) $(MAINOBJECTS) -o $(MAINEXE) -l:$(SDLSTATICNAME)
 
 # How to build tests
-# Currently only one test file
-TESTSOURCE = tests/evector_tests.cpp
+TESTSOURCE = $(wildcard tests/*.cpp)
 TESTOBJECTS = $(TESTSOURCE:.cpp=.o)
 TESTEXE = test.exe
 test: $(TESTOBJECTS)

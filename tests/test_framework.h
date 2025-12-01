@@ -18,11 +18,18 @@
 	} while (0)
 
 #define TEST_SUITE(name) \
+	void run_##name() \
 	{ \
 		int success = 0; \
 		int total = 0; \
-		std::cout << "Running test suite: " << name << std::endl;
+		std::cout << "Running test suite: " << #name << std::endl;
 
 #define TEST_SUITE_END \
 		std::cout << "Test suite results: " << success << "/" << total << " passed" << std::endl; \
 	}
+
+#define DECLARE_TEST_SUITE(name) \
+	void run_##name();
+
+#define RUN_TEST_SUITE(name) \
+	run_##name();
