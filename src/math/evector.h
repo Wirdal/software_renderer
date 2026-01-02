@@ -4,6 +4,9 @@
 #include <cmath>
 #include "concepts/concepts.h"
 
+template <size_t Rows, size_t Cols, Floating T>
+class matrix;
+
 /*
 Most game programmers use "vector" to refer to points as well as vectors in the algebraic sense
 
@@ -223,6 +226,18 @@ struct evector // evector for euclidean vector
 		return 	((T{1} - beta) * (*this)) + (beta* other);
 	}
 
+	// This return type is not complete, I think this is implementation dependant if this works or not
+	// if it does not work, might need to not do header only stuff
+	constexpr matrix<1, Dimensions, T> transpose() const
+	{
+		matrix<1, Dimensions, T> retMat;
+
+		for (size_t ite = 0; ite < Dimensions; ite++)
+		{
+			retMat[0][ite] = m_data[ite];
+		}
+		return retMat;
+	};
 // private:
 	T m_data[Dimensions];
 };

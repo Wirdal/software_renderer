@@ -1,5 +1,6 @@
 #include "test_framework.h"
 #include "math/evector.h"
+#include "math/matrix.h"
 
 TEST_SUITE(evector_tests)
 {
@@ -133,6 +134,18 @@ TEST_SUITE(evector_tests)
 		CHECK_TRUE(lerped_vec[0] == 5.0f);
 		CHECK_TRUE(lerped_vec[1] == 5.0f);
 		CHECK_TRUE(lerped_vec[2] == 5.0f); // halfway between vec1 and vec2
+	}
+
+	// Transpose into matrix
+	{
+		evector<float, 3> vec1;
+		vec1[0] = 10.0f; vec1[1] = 20.0f; vec1[2] = 30.0f;
+
+		matrix<1, 3, float> mat = vec1.transpose();
+
+		CHECK_TRUE(mat[0][0] == 10.0f);
+		CHECK_TRUE(mat[0][1] == 20.0f);
+		CHECK_TRUE(mat[0][2] == 30.0f); // halfway between vec1 and vec2
 	}
 }
 TEST_SUITE_END
