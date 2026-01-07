@@ -25,7 +25,8 @@ Not sure how I can represent this in C++ without re-writing the entire thing
 template <Floating T = float, size_t Dimensions = 3>
 struct evector // evector for euclidean vector
 {
-
+	template <size_t Rows, size_t Cols, Floating MT>
+	friend class matrix;
 	// Epsilon is one in one hundredth of the smallest representable value
 	static constexpr T epsilon { std::numeric_limits<T>::epsilon() * T{100} };
 

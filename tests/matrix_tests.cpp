@@ -70,5 +70,19 @@ TEST_SUITE(matrix_tests)
 		CHECK_TRUE(result[2][1] == (7.0f*11.0f + 8.0f*14.0f + 9.0f*17.0f)); // 7*11 + 8*14 + 9*17 = 77 + 112 + 153 = 342
 		CHECK_TRUE(result[2][2] == (7.0f*12.0f + 8.0f*15.0f + 9.0f*18.0f)); // 7*12 + 8*15 + 9*18 = 84 + 120 + 162 = 366
 	}
+
+	// Identity Matrix
+	{
+		auto id = matrix<3, 3, float>::identity();
+	
+		CHECK_TRUE(id[0][0] == 1.0f);
+		CHECK_TRUE(id[1][1] == 1.0f);
+		CHECK_TRUE(id[2][2] == 1.0f);
+
+		CHECK_TRUE(id[2][0] == 0.0f);
+
+		// Fails to compile
+		// auto id = matrix<3, 2, float>::identity();
+	}
 }
 TEST_SUITE_END

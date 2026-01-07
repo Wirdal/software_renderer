@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include "concepts/concepts.h"
 #include "evector.h"
 
@@ -46,6 +47,22 @@ public:
 		return result;
 	}
 
+	static constexpr matrix<Rows, Cols, T> identity() requires Square<Rows, Cols>
+	{
+		matrix<Rows, Cols, T> retMatrix;
+		for (auto& vec : retMatrix.m_data)
+		{
+			std::fill(std::begin(vec.m_data), std::end(vec.m_data), T{0});
+		}
+		size_t i = 0;
+		while (i < Rows)
+		{
+			retMatrix.m_data[i][i] = T{1}; // Unsure if this is the best, maybe needs type traits?
+			i++;
+		}
+
+		return retMatrix;
+	}
 
 private:
 	evector<T, Rows> m_data[Cols];

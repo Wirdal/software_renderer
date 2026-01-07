@@ -15,4 +15,4 @@ template <size_t D>
 concept ValidDimensions = ((D == 3) || (D == 2));
 
 template <size_t Length, size_t Width>
-concept Square = (Length == width);
+concept Square = (Length == Width);
