@@ -64,6 +64,47 @@ public:
 		return retMatrix;
 	}
 
+	// Adds additional dimensions
+	template<size_t OutRows, size_t OutCols>
+	constexpr matrix<OutRows, OutCols, T> grow() const /* requires Greater<size_t, OutCols, Cols> && Greater<size_t, OutRows, Rows>*/
+	{
+		matrix<OutRows, OutCols, T> retMatrix;
+
+		// Copy over the data first
+		for (size_t row = 0; row < Rows; row++)
+		{
+			for(size_t col = 0; col < Cols; col++)
+			{
+				retMatrix[row][col] = m_data[row][col];
+			}
+		}
+
+		for (size_t row = Rows; row < OutRows; row++)
+		{
+			for(size_t col = 0; col < OutCols; col++)
+			{
+				retMatrix[row][col] = T{};
+			}
+		}
+
+		for (size_t col = Cols; col < OutCols; col++)
+		{
+			for(size_t row = 0; row < OutRows; row++)
+			{
+				retMatrix[row][col] = T{};
+			}
+		}
+
+
+		return retMatrix;
+	}
+
+	// Do translation via homogenous coordinates
+	constexpr void translate(const matrix<Rows + 1, Cols + 1, T>) requires Square<Rows, Cols>
+	{
+		
+	}
+
 private:
 	evector<T, Rows> m_data[Cols];
 };

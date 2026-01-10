@@ -84,5 +84,22 @@ TEST_SUITE(matrix_tests)
 		// Fails to compile
 		// auto id = matrix<3, 2, float>::identity();
 	}
+
+	// Growth
+	{
+		auto id = matrix<3, 3, float>::identity();
+		matrix<4, 4, float> growth = id.grow<4,4>();
+
+		// Identity should be the same
+		CHECK_TRUE(growth[0][0] == 1.0f);
+		CHECK_TRUE(growth[1][1] == 1.0f);
+		CHECK_TRUE(growth[2][2] == 1.0f);
+
+		CHECK_TRUE(growth[2][0] == 0.0f);
+		// But there should be more as well
+
+		CHECK_TRUE(growth[3][3] == 0.0f);
+
+	}
 }
 TEST_SUITE_END
