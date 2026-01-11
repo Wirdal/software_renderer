@@ -9,6 +9,9 @@ template <size_t Rows, size_t Cols, Floating T>
 class matrix
 {
 public:
+
+	matrix() = default;
+
 	constexpr evector<T, Rows>& operator[] (size_t index)
 	{
 		return m_data[index];
@@ -23,7 +26,8 @@ public:
 	// The "rows" of LHS are multiplied into the "columns" of RHS
 	// The output matrix will be of size LHS rows x RHS cols
 	// In general, an element of the output matrix is the dot product of row I from LHS and column J from RHS
-	friend constexpr matrix<Rows, Cols, T> operator*(const matrix<Rows, Cols, T>& lhs, const matrix<Cols, Rows, T>& rhs)
+	template<size_t RhsCols>
+	friend constexpr matrix<Rows, RhsCols, T> operator*(const matrix<Rows, Cols, T>& lhs, const matrix<Cols, RhsCols, T>& rhs)
 	{
 		matrix<Rows, Cols, T> result{};
 		
@@ -98,13 +102,6 @@ public:
 
 		return retMatrix;
 	}
-
-	// Do translation via homogenous coordinates
-	constexpr void translate(const matrix<Rows + 1, Cols + 1, T>) requires Square<Rows, Cols>
-	{
-		
-	}
-
 private:
 	evector<T, Rows> m_data[Cols];
 };

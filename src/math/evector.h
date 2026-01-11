@@ -35,6 +35,22 @@ struct evector // evector for euclidean vector
 		return (epsilon >= std::fabs(a - b) ||  std::fabs(a - b) <= epsilon);
 	}
 
+	evector() = default;
+
+	evector(std::initializer_list<T> init)
+	{
+		// List should be our size
+		if (init.size() == Dimensions)
+		{
+			std::copy(init.begin(), init.end(), std::begin(m_data));
+		}
+		else
+		{
+			;
+			// do nothing
+		}
+	}
+
 	// Modifies input vector
 	friend constexpr evector& operator*(evector& vec, T scalar)
 	{

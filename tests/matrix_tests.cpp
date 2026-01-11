@@ -1,5 +1,6 @@
 #include "test_framework.h"
 #include "math/matrix.h"
+#include "math/transformation_matrix.h"
 #include <iostream>
 
 TEST_SUITE(matrix_tests)
@@ -100,6 +101,28 @@ TEST_SUITE(matrix_tests)
 
 		CHECK_TRUE(growth[3][3] == 0.0f);
 
+	}
+
+	// Translation via homogenous coords
+	// This can be done simply by taking an identity matrix and setting the last row properly
+	{
+		translation_matrix<float> mat = matrix<4, 4, float>::identity();
+		// set up the tranlations
+		mat[3][0] = 10.0f; mat[3][1] = 10.0f; mat[3][2] = 10.0f;
+
+		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
+
+		// Then we can dot product
+
+		// 1x4 dot 4x4 matrix = 1x4 matrix
+		matrix<1, 4, float> after = before.transpose() * mat;
+
+		// With the identity matrix, this should be equivelent to 
+		// = r_x + t_x, r_y + t_y, r_z + t_z, 1
+		CHECK_TRUE(after[0][0] = 11.0f);
+		CHECK_TRUE(after[0][1] = 12.0f);
+		CHECK_TRUE(after[0][2] = 13.0f);
+		CHECK_TRUE(after[0][3] = 1.0f);
 	}
 }
 TEST_SUITE_END
