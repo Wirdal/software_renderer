@@ -255,6 +255,6 @@ struct evector // evector for euclidean vector
 		}
 		return retMat;
 	};
-// private:
+private:
 	T m_data[Dimensions];
 };
