@@ -119,10 +119,20 @@ TEST_SUITE(matrix_tests)
 
 		// With the identity matrix, this should be equivelent to 
 		// = r_x + t_x, r_y + t_y, r_z + t_z, 1
-		CHECK_TRUE(after[0][0] = 11.0f);
-		CHECK_TRUE(after[0][1] = 12.0f);
-		CHECK_TRUE(after[0][2] = 13.0f);
-		CHECK_TRUE(after[0][3] = 1.0f);
+		CHECK_TRUE(after[0][0] == 11.0f);
+		CHECK_TRUE(after[0][1] == 12.0f);
+		CHECK_TRUE(after[0][2] == 13.0f);
+		CHECK_TRUE(after[0][3] == 1.0f);
+
+		// Inversion of the matrix, which pretty much reverse the translations, can be done by inverting the vertex t
+
+		before = {-1.0f, -2.0f, -3.0f, 1.0f};
+		after = before.transpose() * mat;
+		CHECK_TRUE(after[0][0] == 9.0f);
+		CHECK_TRUE(after[0][1] == 8.0f);
+		CHECK_TRUE(after[0][2] == 7.0f);
+		CHECK_TRUE(after[0][3] == 1.0f);
+
 	}
 }
 TEST_SUITE_END

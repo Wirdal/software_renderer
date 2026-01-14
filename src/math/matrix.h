@@ -12,12 +12,12 @@ public:
 
 	matrix() = default;
 
-	constexpr evector<T, Rows>& operator[] (size_t index)
+	constexpr evector<T, Cols>& operator[] (size_t index)
 	{
 		return m_data[index];
 	}
 
-	constexpr const evector<T, Rows>& operator[] (size_t index) const
+	constexpr const evector<T, Cols>& operator[] (size_t index) const
 	{
 		return m_data[index];
 	}
@@ -29,19 +29,18 @@ public:
 	template<size_t RhsCols>
 	friend constexpr matrix<Rows, RhsCols, T> operator*(const matrix<Rows, Cols, T>& lhs, const matrix<Cols, RhsCols, T>& rhs)
 	{
-		matrix<Rows, Cols, T> result{};
+		matrix<Rows, RhsCols, T> result{};
 		
 		// For each elem in result matrix
 		for (size_t row = 0; row < Rows; row++)
 		{
-			for (size_t col = 0; col < Cols; col++)
+			for (size_t col = 0; col < RhsCols; col++)
 			{
 				T dot_prod{};
-				// For each dataum in the inputs
-				for (size_t inner = 0; inner < Rows; inner++)
+				// For each datum in the inputs
+				for (size_t inner = 0; inner < Cols; inner++)
 				{
 					// Matrix product is the dot between each row of lhs and each column of rhs
-					// Since these are both represented in row-major order, we cannot just _dot_ each
 					dot_prod += lhs[row][inner] * rhs[inner][col];
 				}
 
@@ -103,5 +102,5 @@ public:
 		return retMatrix;
 	}
 private:
-	evector<T, Rows> m_data[Cols];
+	evector<T, Cols> m_data[Rows];
 };
