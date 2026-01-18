@@ -2,6 +2,7 @@
 #include "math/matrix.h"
 #include "math/transformation_matrix.h"
 #include <iostream>
+#include <numbers>
 
 TEST_SUITE(matrix_tests)
 {
@@ -104,7 +105,7 @@ TEST_SUITE(matrix_tests)
 	}
 
 	// Translation via homogenous coords
-	// This can be done simply by taking an identity matrix and setting the last row properly
+	// This can be done simply by taking an identity matrix and setting the last row to the desired translation
 	{
 		translation_matrix<float> mat = matrix<4, 4, float>::identity();
 		// set up the tranlations
@@ -132,6 +133,30 @@ TEST_SUITE(matrix_tests)
 		CHECK_TRUE(after[0][1] == 8.0f);
 		CHECK_TRUE(after[0][2] == 7.0f);
 		CHECK_TRUE(after[0][3] == 1.0f);
+	}
+
+	// Rotation via hoogenous coordinates
+	// Tests rotation about different axies
+	// I can combine translation and rotation in their own columns...
+	{
+		translation_matrix<float> mat = matrix<4, 4, float>::identity();
+
+
+		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
+
+		// Rotation about x axis with angel phi
+		constexpr float pi = std::numbers::pi_v<float>;
+		mat[1][1] = std::cos(pi);
+		mat[1][2] = std::sin(pi);
+		mat[2][1] = -std::sin(pi);
+		mat[2][2] = -std::cos(pi);
+
+		matrix<1, 4, float> after = before.transpose() * mat;
+
+
+		// We're rotating about x, but not far enough to inverse the Z coord
+		constexpr evector<float, 4> afterXCheck{1.0f, -2.0f, 3.0f, 1.0f};
+		CHECK_TRUE(after == afterXCheck.transpose());
 
 	}
 }

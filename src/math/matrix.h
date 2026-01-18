@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cmath>
 #include "concepts/concepts.h"
 #include "evector.h"
 
@@ -20,6 +21,19 @@ public:
 	constexpr const evector<T, Cols>& operator[] (size_t index) const
 	{
 		return m_data[index];
+	}
+
+	friend constexpr bool operator==(const matrix<Rows, Cols, T>& lhs, const matrix<Rows, Cols, T>& rhs)
+	{
+		for (size_t row = 0; row < Rows; row++)
+		{
+			if (lhs.m_data[row] != rhs.m_data[row])
+			{
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 	

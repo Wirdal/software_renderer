@@ -37,7 +37,7 @@ struct evector // evector for euclidean vector
 
 	evector() = default;
 
-	evector(std::initializer_list<T> init)
+	constexpr evector(const std::initializer_list<T> init)
 	{
 		// List should be our size
 		if (init.size() == Dimensions)
@@ -119,6 +119,20 @@ struct evector // evector for euclidean vector
 		}
 		return result;
 	}
+
+	friend constexpr bool operator==(const evector& lhs, const evector& rhs)
+	{
+		for (size_t entry = 0; entry < Dimensions; entry++)
+		{
+			if (!approximately_equal(lhs[entry], rhs[entry]))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
 
 	constexpr T& operator[] (size_t index)
 	{
