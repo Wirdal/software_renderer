@@ -149,13 +149,13 @@ TEST_SUITE(matrix_tests)
 		mat[1][1] = std::cos(pi);
 		mat[1][2] = std::sin(pi);
 		mat[2][1] = -std::sin(pi);
-		mat[2][2] = -std::cos(pi);
+		mat[2][2] = std::cos(pi);
 
 		matrix<1, 4, float> after = before.transpose() * mat;
 
 
 		// We're rotating about x, but not far enough to inverse the Z coord
-		constexpr evector<float, 4> afterXCheck{1.0f, -2.0f, 3.0f, 1.0f};
+		constexpr evector<float, 4> afterXCheck{1.0f, -2.0f, -3.0f, 1.0f};
 		CHECK_TRUE(after == afterXCheck.transpose());
 
 	}
