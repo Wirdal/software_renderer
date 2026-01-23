@@ -143,7 +143,7 @@ TEST_SUITE(matrix_tests)
 
 		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
 
-		// Rotation about x axis with angel phi
+		// Rotation about x axis with angle phi
 		constexpr float pi = std::numbers::pi_v<float>;
 		mat[1][1] = std::cos(pi);
 		mat[1][2] = std::sin(pi);
@@ -162,7 +162,7 @@ TEST_SUITE(matrix_tests)
 
 		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
 
-		// Rotation about y axis with angel phi
+		// Rotation about y axis with angle phi
 		constexpr float pi = std::numbers::pi_v<float>;
 		mat[0][0] = std::cos(pi);
 		mat[0][2] = -std::sin(pi);
@@ -174,5 +174,25 @@ TEST_SUITE(matrix_tests)
 		constexpr evector<float, 4> afterXCheck{-1.0f, 2.0f, -3.0f, 1.0f};
 		CHECK_TRUE(after == afterXCheck.transpose());
 	}
+
+	// Rotation about Z
+	{
+		translation_matrix<float> mat = matrix<4, 4, float>::identity();
+
+		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
+
+		// Rotation about y axis with angle gamma
+		constexpr float pi = std::numbers::pi_v<float>;
+		mat[0][0] = std::cos(pi);
+		mat[0][1] = std::sin(pi);
+		mat[1][0] = -std::sin(pi);
+		mat[1][1] = std::cos(pi);
+
+		matrix<1, 4, float> after = before.transpose() * mat;
+
+		constexpr evector<float, 4> afterXCheck{-1.0f, -2.0f, 3.0f, 1.0f};
+		CHECK_TRUE(after == afterXCheck.transpose());
+	}
+	// Test inverse after?
 }
 TEST_SUITE_END
