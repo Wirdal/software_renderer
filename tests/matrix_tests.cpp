@@ -194,5 +194,27 @@ TEST_SUITE(matrix_tests)
 		CHECK_TRUE(after == afterXCheck.transpose());
 	}
 	// Test inverse after?
+
+	// Scale
+	// uniform scale
+	// Can be be done in _any_ order if uniform and rotation
+	{
+		scaling_matrix<float> mat = matrix<4, 4, float>::identity();
+
+		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
+
+		const float scaleFactor = 5.0f;
+
+		mat[0][0] = scaleFactor;
+		mat[1][1] = scaleFactor;
+		mat[2][2] = scaleFactor;
+
+		matrix<1, 4, float> after = before.transpose() * mat;
+
+		CHECK_TRUE(after[0][0]= 5.0f);
+		CHECK_TRUE(after[1][1]= 10.0f);
+		CHECK_TRUE(after[2][2]= 15.0f);
+		CHECK_TRUE(after[3][3]= 1.0f);
+	}
 }
 TEST_SUITE_END
