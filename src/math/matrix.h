@@ -81,6 +81,60 @@ public:
 		return retMatrix;
 	}
 
+	// 4x4 transform constructors (homogeneous coordinates)
+	// translation(T t) - uniform translation applied to x/y/z (stored in last row in this row-vector convention)
+	static constexpr matrix<Rows, Cols, T> translation(T t) requires (Rows == 4 && Cols == 4)
+	{
+		matrix<Rows, Cols, T> ret = matrix<Rows, Cols, T>::identity();
+		ret[3][0] = t;
+		ret[3][1] = t;
+		ret[3][2] = t;
+		return ret;
+	}
+
+	// Rotation about X axis
+	static constexpr matrix<Rows, Cols, T> rotation_x(T theta) requires (Rows == 4 && Cols == 4)
+	{
+		matrix<Rows, Cols, T> ret = matrix<Rows, Cols, T>::identity();
+		ret[1][1] = std::cos(theta);
+		ret[1][2] = std::sin(theta);
+		ret[2][1] = -std::sin(theta);
+		ret[2][2] = std::cos(theta);
+		return ret;
+	}
+
+	// Rotation about Y axis
+	static constexpr matrix<Rows, Cols, T> rotation_y(T theta) requires (Rows == 4 && Cols == 4)
+	{
+		matrix<Rows, Cols, T> ret = matrix<Rows, Cols, T>::identity();
+		ret[0][0] = std::cos(theta);
+		ret[0][2] = -std::sin(theta);
+		ret[2][0] = std::sin(theta);
+		ret[2][2] = std::cos(theta);
+		return ret;
+	}
+
+	// Rotation about Z axis
+	static constexpr matrix<Rows, Cols, T> rotation_z(T theta) requires (Rows == 4 && Cols == 4)
+	{
+		matrix<Rows, Cols, T> ret = matrix<Rows, Cols, T>::identity();
+		ret[0][0] = std::cos(theta);
+		ret[0][1] = std::sin(theta);
+		ret[1][0] = -std::sin(theta);
+		ret[1][1] = std::cos(theta);
+		return ret;
+	}
+
+	// Uniform scaling
+	static constexpr matrix<Rows, Cols, T> scaling(T s) requires (Rows == 4 && Cols == 4)
+	{
+		matrix<Rows, Cols, T> ret = matrix<Rows, Cols, T>::identity();
+		ret[0][0] = s;
+		ret[1][1] = s;
+		ret[2][2] = s;
+		return ret;
+	}
+
 	// Adds additional dimensions
 	template<size_t OutRows, size_t OutCols>
 	constexpr matrix<OutRows, OutCols, T> grow() const /* requires Greater<size_t, OutCols, Cols> && Greater<size_t, OutRows, Rows>*/

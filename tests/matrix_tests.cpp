@@ -107,9 +107,7 @@ TEST_SUITE(matrix_tests)
 	// Translation via homogenous coords
 	// This can be done simply by taking an identity matrix and setting the last row to the desired translation
 	{
-		translation_matrix<float> mat = matrix<4, 4, float>::identity();
-		// set up the tranlations
-		mat[3][0] = 10.0f; mat[3][1] = 10.0f; mat[3][2] = 10.0f;
+		matrix<4, 4, float> mat = matrix<4, 4, float>::translation(10.0f);
 
 		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
 
@@ -139,16 +137,9 @@ TEST_SUITE(matrix_tests)
 	// Tests rotation about different axies
 	// I can combine translation and rotation in their own columns...
 	{
-		translation_matrix<float> mat = matrix<4, 4, float>::identity();
+		matrix<4, 4, float> mat = matrix<4,4,float>::rotation_x(std::numbers::pi_v<float>);
 
 		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
-
-		// Rotation about x axis with angle phi
-		constexpr float pi = std::numbers::pi_v<float>;
-		mat[1][1] = std::cos(pi);
-		mat[1][2] = std::sin(pi);
-		mat[2][1] = -std::sin(pi);
-		mat[2][2] = std::cos(pi);
 
 		matrix<1, 4, float> after = before.transpose() * mat;
 
@@ -158,16 +149,9 @@ TEST_SUITE(matrix_tests)
 	
 	// Rotation about Y
 	{
-		translation_matrix<float> mat = matrix<4, 4, float>::identity();
+		matrix<4, 4, float> mat = matrix<4,4,float>::rotation_y(std::numbers::pi_v<float>);
 
 		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
-
-		// Rotation about y axis with angle phi
-		constexpr float pi = std::numbers::pi_v<float>;
-		mat[0][0] = std::cos(pi);
-		mat[0][2] = -std::sin(pi);
-		mat[2][0] = std::sin(pi);
-		mat[2][2] = std::cos(pi);
 
 		matrix<1, 4, float> after = before.transpose() * mat;
 
@@ -177,16 +161,9 @@ TEST_SUITE(matrix_tests)
 
 	// Rotation about Z
 	{
-		translation_matrix<float> mat = matrix<4, 4, float>::identity();
+		matrix<4, 4, float> mat = matrix<4,4,float>::rotation_z(std::numbers::pi_v<float>);
 
 		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
-
-		// Rotation about y axis with angle gamma
-		constexpr float pi = std::numbers::pi_v<float>;
-		mat[0][0] = std::cos(pi);
-		mat[0][1] = std::sin(pi);
-		mat[1][0] = -std::sin(pi);
-		mat[1][1] = std::cos(pi);
 
 		matrix<1, 4, float> after = before.transpose() * mat;
 
@@ -199,16 +176,9 @@ TEST_SUITE(matrix_tests)
 	// uniform scale
 	// Can be be done in _any_ order if uniform and rotation
 	{
-		scaling_matrix<float> mat = matrix<4, 4, float>::identity();
+		matrix<4, 4, float> mat = matrix<4,4,float>::scaling(5.0f);
 
 		evector<float, 4> before{1.0f, 2.0f, 3.0f, 1.0f};
-
-		const float scaleFactor = 5.0f;
-
-		mat[0][0] = scaleFactor;
-		mat[1][1] = scaleFactor;
-		mat[2][2] = scaleFactor;
-
 		matrix<1, 4, float> after = before.transpose() * mat;
 
 		CHECK_TRUE(after[0][0]= 5.0f);
