@@ -13,6 +13,16 @@ public:
 
 	matrix() = default;
 
+	constexpr matrix<1, 4, T> operator()() requires (Rows == 1 && Cols == 3)
+	{
+		matrix<1, 4, T> retMat;
+		for (size_t ite = 0; ite < Cols; ite++)
+		{
+			retMat[0][ite] = m_data[0][ite];
+		}
+		return retMat;
+	}
+
 	constexpr evector<T, Cols>& operator[] (size_t index)
 	{
 		return m_data[index];
@@ -35,7 +45,6 @@ public:
 		
 		return true;
 	}
-
 	
 	// The "rows" of LHS are multiplied into the "columns" of RHS
 	// The output matrix will be of size LHS rows x RHS cols

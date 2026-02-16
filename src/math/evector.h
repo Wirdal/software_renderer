@@ -51,6 +51,11 @@ struct evector // evector for euclidean vector
 		}
 	}
 
+	constexpr evector<T, 4> operator()() requires (Dimensions == 3)
+	{
+		return evector<T, 4>{m_data[0], m_data[1], m_data[2], T{1}};
+	}
+
 	// Modifies input vector
 	friend constexpr evector& operator*(evector& vec, T scalar)
 	{
