@@ -4,6 +4,31 @@
 #include <iostream>
 #include <numbers>
 
+#include <vector>
+
+template<size_t Rows, size_t Cols, typename T>
+static void print_matrix(const matrix<Rows, Cols, T>& mat)
+{
+	for (size_t row = 0; row < Rows; row++)
+	{
+		for (size_t col = 0; col < Cols; col++)
+		{
+			std::cout << mat[row][col] << " ";
+		}
+		std::cout << "\n";
+	}
+}
+
+template<typename T, size_t Dimensions>
+static void print_vector(const evector<T, Dimensions>& vec)
+{
+	for (size_t i = 0; i < Dimensions; i++)
+	{
+		std::cout << vec[i] << " ";
+	}
+	std::cout << "\n";
+}
+
 TEST_SUITE(matrix_tests)
 {
 	// Row-major storage test
@@ -185,6 +210,63 @@ TEST_SUITE(matrix_tests)
 		CHECK_TRUE(after[1][1]= 10.0f);
 		CHECK_TRUE(after[2][2]= 15.0f);
 		CHECK_TRUE(after[3][3]= 1.0f);
+	}
+
+	// Change of basis
+	// Transform two points to world-space coordinates
+	{
+		// The two points are at -1, 1, 0 and 1, 1, -1
+		// This is almost a line across 0,0,0 in model space
+		evector<float, 4> first{-1.0f, 1.0f, 0.0f, 1.0f};
+		evector<float, 4> second{-1.0f, 1.0f, -1.0f, 1.0f};
+		
+		std::vector<evector<float, 4>> points {first, second};
+
+		// But really, we need to place this in a translation matrix
+		matrix<4, 4, float> worldTranslation = matrix<4, 4, float>::identity();
+		// The actual place they are in world space is 0, 0, -20
+		worldTranslation[3][0] = 0.0f;
+		worldTranslation[3][1] = 0.0f;
+		worldTranslation[3][2] = -20.0f;
+
+		// So essentially we need to translate each point by dotting them  with the world translation
+		for (auto&& point : points)
+		{
+			auto vec = point.transpose() * worldTranslation;
+			point[0] = vec[0][0];
+			point[1] = vec[0][1];
+			point[2] = vec[0][2];
+		}
+
+		// Then, translate it to "view" space, which is at 0, 0, 5
+
+		// HOWEVER, we need to invert the translation, which is done by negating the translation vector, so we need to translate by 0, 0, -5 instead of 0, 0, 5
+		// This is because we are translating the world, not the camera, so we need to translate in the opposite direction of the camera's movement
+		matrix<4, 4, float> camera = matrix<4, 4, float>::identity();
+		camera[3][0] = 0.0f;
+		camera[3][1] = 0.0f;
+		camera[3][2] = -5.0f;
+
+		for (auto&& point : points)
+		{
+			auto vec = point.transpose() * camera;
+			point[0] = vec[0][0];
+			point[1] = vec[0][1];
+			point[2] = vec[0][2];
+		}
+
+		// for (auto&& point : points)
+		// {
+		// 	print_vector(point);
+		// }
+
+		CHECK_TRUE(points[0][0] == -1.0f);
+		CHECK_TRUE(points[0][1] == 1.0f);
+		CHECK_TRUE(points[0][2] == -25.0f);
+
+		CHECK_TRUE(points[1][0] == -1.0f);
+		CHECK_TRUE(points[1][1] == 1.0f);
+		CHECK_TRUE(points[1][2] == -26.0f);
 	}
 }
 TEST_SUITE_END
