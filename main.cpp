@@ -71,6 +71,10 @@ int main()
 	SDL_Event event;
 	while (!quit)
 	{
+		// Clear the screen
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
+
 		// Poll events first
 		while (SDL_PollEvent(&event) && !quit)
 		{
@@ -111,11 +115,7 @@ int main()
 		view[3][1] = -cameraPosition[1];
 		view[3][2] = -cameraPosition[2];
 
-		// Clear the screen
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
-
-		// Transform each vertex through: model -> world -> view -> NDC -> screen
+		// Transform each vertex through: model -> world -> view -> NDC (normalized device coordinates) -> screen
 		// We'll perform a simple orthographic projection mapping X/Y from [-1,1] to screen pixels.
 		// NOTE: To avoid apparent "stretching" while rotating when the window is not square,
 		// we must use a uniform pixels-per-unit scale for both X and Y. Previously we mapped
