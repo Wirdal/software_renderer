@@ -255,10 +255,6 @@ TEST_SUITE(matrix_tests)
 			point[2] = vec[0][2];
 		}
 
-		// for (auto&& point : points)
-		// {
-		// 	print_vector(point);
-		// }
 
 		CHECK_TRUE(points[0][0] == -1.0f);
 		CHECK_TRUE(points[0][1] == 1.0f);

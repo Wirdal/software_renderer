@@ -91,7 +91,7 @@ public:
 	}
 
 	// 4x4 transform constructors (homogeneous coordinates)
-	// translation(T t) - uniform translation applied to x/y/z (stored in last row in this row-vector convention)
+	// translation(T t) - uniform translation applied to x/y/z (stored in last column in this row-vector convention)
 	static constexpr matrix<Rows, Cols, T> translation(T t) requires (Rows == 4 && Cols == 4)
 	{
 		matrix<Rows, Cols, T> ret = matrix<Rows, Cols, T>::identity();
